@@ -61,36 +61,29 @@ public class GameService {
 
 
     // 제일 비싼 게임의 정보
-//    public List<Game> mostPriceGame(){
-//        int Mprice = 0;
-//        for(int i = 0; i < getAllGames().size(); i++){
-//            if(getGameById(i).getPrice() > getGameById(i+1).getPrice()){
-//                Mprice = getGameById(i);
-//            }
-//        return Mprice;
-//    }
-    // ↑ 해답
-    public Game getGameWithMaxPrice(){
+    public Game getGameWithMaxPrice() {
         List<Game> games = gameRepository.findAll();
         // 람다식이 아닌 일반 자바코드 사용 예
-//        if(games.size() <= 1){
-//            throw new ResourceNotFoundException("Max Price", " ", "");
-//        }
-//        Game max = games.get(0);
-//        for(int i=0; i < games.size() - 1; i++){
-//            if(games.get(i).getPrice() > games.get(i+1).getPrice()){
-//                max = games.get(i);
-//            }
-//        }
-//        return max;
+        if (games.size() <= 1) {
+            throw new ResourceNotFoundException("Max Price", " ", "");
+        }
+        Game max = games.get(0);
+        for (int i = 0; i < games.size() - 1; i++) {
+            if (games.get(i).getPrice() > games.get(i + 1).getPrice()) {
+                max = games.get(i);
+            }
+        }
+
+        return max;
         // 람다식 사용 예
 
-//        return games.stream().sorted(Comparator.comparingInt(Game::getPrice())
-                 return games.stream().sorted(Comparator.comparingInt((Game g) -> g.getPrice())
-                .reversed())
-                .findFirst()
-                .orElseThrow(() -> new ResourceNotFoundException("Max Price", " ", " "));
+//        return games.stream().sorted(Comparator.comparingInt(Game::getPrice()) // 바로 아래 코드와 상동
+//        return games.stream().sorted(Comparator.comparingInt((Game g) -> g.getPrice())
+//                .reversed())
+//                .findFirst()
+//                .orElseThrow(() -> new ResourceNotFoundException("Max Price", " ", " "));
         // SQL 사용 예
+//            return gameRepository.getGameWithMaxPrice();
     }
     // 제일 비싼 게임 Top3
     public List<Game> getGameWithMaxPriceTop3(){
@@ -103,10 +96,13 @@ public class GameService {
 //        newGames.add(games.get(1));
 //        newGames.add(games.get(2));
 //        return newGames;
-
-        return games.stream()
-                .sorted(Comparator.comparingInt(Game::getPrice).reversed())
-                .limit(3)
-                .collect(Collectors.toList());
+//        // 람다식 적용
+//        return games.stream()
+//                .sorted(Comparator.comparingInt(Game::getPrice).reversed())
+//                .limit(3)
+//                .collect(Collectors.toList());
+        // SQL 사용 예
+        return gameRepository.getGameWithMaxPriceTop3()
+                .stream().limit(3).collect(Collectors.toList());
     }
 }
