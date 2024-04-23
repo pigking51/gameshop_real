@@ -1,5 +1,6 @@
 package dw.gameshop.controller;
 
+import dw.gameshop.dto.ReviewDto;
 import dw.gameshop.model.Review;
 import dw.gameshop.service.ReviewService;
 import org.springframework.http.HttpStatus;
@@ -32,5 +33,18 @@ public class ReviewController {
         return new ResponseEntity<>(reviewService.saveReview(review),
                 HttpStatus.OK);
     }
+
+    @GetMapping("/reviews/dto")
+    public ResponseEntity<List<ReviewDto>> getReviewAllByDto(){
+        return new ResponseEntity<>(reviewService.getReviewAllByDto(),
+                HttpStatus.OK);
+    }
+
+//    @GetMapping("/reviews/dto_review/")
+//    public ResponseEntity<ReviewDto> toReviewDtoFromReview(Review review){
+//        return new ResponseEntity<>(reviewService.toReviewDtoFromReview(review),
+//                HttpStatus.OK);
+//    }
+
 
 }
